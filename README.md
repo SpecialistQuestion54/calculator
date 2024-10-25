@@ -1,4 +1,4 @@
-Calculator App
+Calculator (written with ChatGPT)
 
 A simple, responsive calculator app built with HTML, CSS, and JavaScript.
 Features
