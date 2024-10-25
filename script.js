@@ -148,6 +148,7 @@ document.addEventListener('keydown', function (event) {
     if (event.ctrlKey && event.key === 'Backspace') {
 
         screen.value = getExpTillLastOp(screen.value, ops);
+        eval_screen_value = getExpTillLastOp(eval_screen_value, ops);
     }
 
 })

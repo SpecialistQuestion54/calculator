@@ -2,12 +2,19 @@
     box-sizing: border-box;
 }
 
+h1{
+    text-align: center;
+    margin : 0 10px 0 0;
+    color: #fff;
+    font-size: 48px;
+}
+
 body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background-color: #f0f0f0;
+    height: 100vh    ;
+    background-color: #494545;
     font-family: Arial, sans-serif;
 }
 
