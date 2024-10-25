@@ -13,7 +13,11 @@ const operator_buttons_array = Array.from(operator_buttons);
 const buttons_array = Array.from(buttons);
 let history = [];
 const ops = ['+', '-', '*', '/'];
-let eval_screen_value;
+let eval_screen_value = "";
+
+function numberWithCommas(num) {
+    return num.toString().replace(/,/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
 function getExpTillLastOp(sv, ops) {
     let i = -1;
@@ -54,8 +58,8 @@ numeric_buttons_array.forEach(button => {
         // Update the value of the screen input field
         screen.value += this.value;
         eval_screen_value += this.value;        
-        let num = getLastNum(screen.value, ops);
-        num = Number(num).toLocaleString('en-US');
+        let num = getLastNum(eval_screen_value, ops);
+        num = numberWithCommas(num);
         screen.value = getExpTillLastOp(screen.value, ops) + num;
 
     });
@@ -66,21 +70,31 @@ operator_buttons_array.forEach(button => {
         // Update the value of the screen input field
         if (screen.value != '' && lastCharNotOperator(screen.value)) {
             screen.value += this.value;
+            eval_screen_value += this.value;
         }
     });
 });
 
 delete_button.addEventListener('click', function () {
     screen.value = screen.value.slice(0, -1);
+    eval_screen_value = eval_screen_value.slice(0, -1);
+
+    if(screen.value[screen.value.length - 1] != '+' && screen.value[screen.value.length - 1] != '-' && screen.value[screen.value.length - 1] != '*' && screen.value[screen.value.length - 1] != '/') {
+        let num = getLastNum(eval_screen_value, ops);
+        num = numberWithCommas(num);
+        screen.value = getExpTillLastOp(screen.value, ops) + num;
+    }
+    
 })
 
 clear_button.addEventListener('click', function () {
     screen.value = '';
+    eval_screen_value = '';
 })
 
 eval_button.addEventListener('click', function () {
     const ans = eval(eval_screen_value);
-    if (eval_screen_value != '') screen.value = ans;
+    if (eval_screen_value != '') screen.value = numberWithCommas(ans);
     history.push(screen.value);
 })
 
