@@ -16,6 +16,15 @@ const ops = ['+', '-', '*', '/'];
 let eval_screen_value = "";
 
 function numberWithCommas(num) {
+    if(num.lastIndexOf('.') != -1) {
+        let floor = num.split('.')[0];
+        let decimal = num.split('.')[1];
+        if(decimal == "00000")
+            return floor.toString().replace(/,/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        else 
+            return floor.toString().replace(/,/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "." + decimal;
+
+    }
     return num.toString().replace(/,/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
@@ -101,7 +110,7 @@ clear_button.addEventListener('click', function () {
 })
 
 eval_button.addEventListener('click', function () {
-    eval_screen_value = eval(eval_screen_value).toString();
+    eval_screen_value = eval(eval_screen_value).toFixed(5).toString();
     if (eval_screen_value != '') screen.value = numberWithCommas(eval_screen_value);
     history.push(screen.value);
 })
