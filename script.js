@@ -42,13 +42,14 @@ function getLastNum(sv, ops) {
 function lastCharNotOperator(sv) {
     return (sv[sv.length - 1] == '+' || sv[sv.length - 1] == '-' || sv[sv.length - 1] == '*' || sv[sv.length - 1] == '/') ? false : true
 }
-
 buttons_array.forEach(button => {
+    let init_bg_color = button.style.backgroundColor;
+    let bg_color_during_hover = '#C1C1C4'; 
     button.addEventListener('mouseover', function () {
-        button.style.backgroundColor = 'rgb(233, 232, 232)';
+        button.style.backgroundColor = bg_color_during_hover;
     })
     button.addEventListener('mouseout', function () {
-        button.style.backgroundColor = '#f0f0f0';
+        button.style.backgroundColor = init_bg_color;
     })
 })
 
@@ -72,18 +73,25 @@ operator_buttons_array.forEach(button => {
             screen.value += this.value;
             eval_screen_value += this.value;
         }
+        if(!lastCharNotOperator(screen.value)) {
+            screen.value = screen.value.slice(0, -1);
+            screen.value += this.value;
+            eval_screen_value = eval_screen_value.slice(0, -1);
+            eval_screen_value += this.value;
+        }
     });
 });
 
 delete_button.addEventListener('click', function () {
-    screen.value = screen.value.slice(0, -1);
     eval_screen_value = eval_screen_value.slice(0, -1);
+    // screen.value = screen.value.slice(0, -1);
 
     if(screen.value[screen.value.length - 1] != '+' && screen.value[screen.value.length - 1] != '-' && screen.value[screen.value.length - 1] != '*' && screen.value[screen.value.length - 1] != '/') {
         let num = getLastNum(eval_screen_value, ops);
         num = numberWithCommas(num);
         screen.value = getExpTillLastOp(screen.value, ops) + num;
     }
+    else screen.value = screen.value.slice(0, -1);
     
 })
 
@@ -93,8 +101,8 @@ clear_button.addEventListener('click', function () {
 })
 
 eval_button.addEventListener('click', function () {
-    const ans = eval(eval_screen_value);
-    if (eval_screen_value != '') screen.value = numberWithCommas(ans);
+    eval_screen_value = eval(eval_screen_value).toString();
+    if (eval_screen_value != '') screen.value = numberWithCommas(eval_screen_value);
     history.push(screen.value);
 })
 
